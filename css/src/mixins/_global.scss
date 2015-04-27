@@ -1,0 +1,239 @@
+
+
+
+body { margin: 0;
+background: #fbfbfb;
+text-align: left;
+}
+
+
+
+
+html, button, input, select, textarea { font-family: sans-serif; color: $baseColour; }
+
+::-moz-selection { background: $accentColour; color: #fff; -moz-text-shadow: none;}
+::selection { background: $accentColour; color: #fff; -webkit-text-shadow: none; text-shadow: none;}
+/* =============================================================================
+   Links
+   ========================================================================== */
+
+a { color: #292929;
+-webkit-transition:color 0.4s ease;
+-moz-transition:color 0.4s ease;
+-o-transition:color 0.4s ease;
+-ms-transition:color 0.4s ease;
+transition:color 0.4s ease;
+
+ }
+a:visited { color: #292929; }
+a:hover, a:active, a:focus { color: $accentColour; }
+a:focus { outline: thin dotted; }
+
+
+
+
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #beb19e; margin: 1em; padding: 0; }
+
+ins { background: #ff9; color: #000; text-decoration: none; }
+
+
+
+
+
+
+/* #Typography
+================================================== */
+
+
+
+
+h1, h2, h3, h4, h5, h6 {
+font-family: 'LatoBold', helvetica, arial, sans-serif;
+color: $titleColor;
+font-weight: normal;
+text-transform: uppercase;
+}
+
+h1 em, h2 em, h3 em, h4 em, h5 em, h6 em {
+font-family: 'LatoBoldItalic', helvetica, arial, sans-serif;
+    font-style: italic;
+}
+
+h1, h2, h3, h4, h5, h6, ul, ol, table {
+margin-left: $gutter;
+margin-right: $gutter;
+}
+
+	h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { font-weight: inherit; }
+	
+	
+	h1 {
+@include pxRem('font-size',36);
+@include pxRem('line-height',30);
+	}
+	
+	
+	a {
+-webkit-transition:color 0.4s;
+-moz-transition:color 0.4s;
+-ms-transition:color 0.4s;
+-o-transition:color 0.4s;
+transition:color 0.4s;
+	}
+
+
+
+
+
+ p {
+font-family: $bodyFont;
+@include pxRem('font-size',15);
+line-height: 1.35em;
+letter-spacing: 0.02em;
+padding: 0;
+@include pxRem('margin',0 $gutter 12 $gutter);
+color: $baseColour;
+}
+
+p em {
+font-family: $bodyItalicFont;
+}
+
+
+
+td p {padding: 0; margin: 0;}
+
+fieldset {border:0;}
+
+   textarea {
+    resize: none;
+    overflow: auto;
+   }
+
+
+/* set up a base for non-media query devices */
+
+.text-centred {
+text-align: center;
+}
+
+
+.noWidows {
+white-space:nowrap;
+}
+
+
+.row {
+width: 100%;
+}
+
+.row h1, .row h2, .row h3, .row h4, .row h5, .row h6, .row p, .row ul, .row ol, .row dl, .row table, .row form, .entry-meta {
+margin-left: 5%;
+margin-right: 5%;
+} 
+
+
+
+
+
+@font-face {
+    font-family: 'LatoBold';
+    src: url('../fontface/lato-bol-webfont.eot');
+    src: url('../fontface/lato-bol-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fontface/lato-bol-webfont.svg#lato') format('svg'),
+         url('../fontface/lato-bol-webfont.woff') format('woff'),
+         url('../fontface/lato-bol-webfont.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LatoBoldItalic';
+    src: url('../fontface/lato-bolita-webfont.eot');
+    src: url('../fontface/lato-bolita-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fontface/lato-bolita-webfont.svg#lato') format('svg'),
+         url('../fontface/lato-bolita-webfont.woff') format('woff'),
+         url('../fontface/lato-bolita-webfont.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+
+
+@font-face {
+    font-family: 'asapRegular';
+    src: url('../fontface/asap-regular-webfont.eot');
+    src: url('../fontface/asap-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fontface/asap-regular-webfont.svg#asapRegular') format('svg'),
+         url('../fontface/asap-regular-webfont.woff') format('woff'),
+         url('../fontface/asap-regular-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'asapItalic';
+    src: url('../fontface/asap-italic-webfont.eot');
+    src: url('../fontface/asap-italic-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fontface/asap-italic-webfont.svg#asapItalic') format('svg'),
+         url('../fontface/asap-italic-webfont.woff') format('woff'),
+         url('../fontface/asap-italic-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+
+
+
+
+
+
+
+#wrapper {
+
+  @include mq(62em) {
+    width: 70%;
+    margin: 0 auto;
+  }
+  
+}
+
+
+
+
+
+.entry-content a {
+text-decoration: none;
+border-bottom: 1px solid lighten($accentColour,30%);
+-webkit-box-shadow: 0 -3px 0 lighten($accentColour,30%) inset;
+-moz-box-shadow: 0 -3px 0 lighten($accentColour,30%) inset;
+-ms-box-shadow: 0 -3px 0 lighten($accentColour,30%) inset;
+-o-box-shadow: 0 -3px 0 lighten($accentColour,30%) inset;
+box-shadow: 0 -3px 0 lighten($accentColour,30%) inset;
+color: inherit;
+-webkit-transition:all 0.4s ease;
+-moz-transition:all 0.4s ease;
+-o-transition:all 0.4s ease;
+-ms-transition:all 0.4s ease;
+transition:all 0.4s ease;
+}
+
+.entry-content a:hover, .entry-content a:active, .entry-content a:focus {
+border-bottom: 1px solid lighten($accentColour,20%);
+-webkit-box-shadow: 0 -3px 0 lighten($accentColour,20%) inset;
+-moz-box-shadow: 0 -3px 0 lighten($accentColour,20%) inset;
+-ms-box-shadow: 0 -3px 0 lighten($accentColour,20%) inset;
+-o-box-shadow: 0 -3px 0 lighten($accentColour,20%) inset;
+box-shadow: 0 -3px 0 lighten($accentColour,20%) inset;
+}
+
+
+@media print {
+
+// add full path for relative links:
+  a[href^="/"]:after {
+        content: " (http://blog.johnholtripley.co.uk" attr(href) ")";
+    }
+
+}
+

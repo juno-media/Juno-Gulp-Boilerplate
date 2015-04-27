@@ -1,0 +1,248 @@
+
+
+@function strip-units($number) {
+  @return $number / ($number * 0 + 1);
+}
+
+@function convertRootPxToEm($value) {
+  // check for null:
+  @if($value == null) {
+    @return $value;
+  }
+  // assume em:
+  @if (unitless($value) or unit($value) == em) {
+    @return 0em + $value;
+  }
+  @else {
+    @return 0em + strip-units($value)/16;
+  }
+}
+
+@function convertPxToRem($px) {
+ @return 0rem + strip-units($px)/($rootFontSize/100*16)
+}
+
+@mixin pxRem($property,$values) {
+  // ##########################
+  // it'd be nice if this didn't include the @media all if the mixin was called from within a MQ
+  // ##########################
+
+  // example usage:
+  // @include pxRem('font-size',14);
+  // @include pxRem('margin',10 20 30 40);
+  // px is assumed though can be specified
+  // @include pxRem('margin',10px 20px 30px 40px);
+  // percentages remain unconverted:
+  // @include pxRem('margin',10 20%);
+  // all percentages can be passed to this mixin - shouldn't be needed, but won't break, and won't add unecessary media query:
+  // @include pxRem('margin',20%);
+  //
+  // kudos to Matt Stow's Suzi
+  //
+  // -----------------------------
+
+  // Create a couple of empty lists as output buffers:
+  $px-values: ();
+  $rem-values: ();
+
+  // Ensure $values is a list.
+  @if type-of($values) != 'list' {
+    $values: join((), $values);
+  }
+
+  // Loop through the $values list:
+  @each $value in $values {
+    @if type-of($value) == number and (unitless($value) or unit($value) == px) {
+    $px-values: join($px-values, 0px + ($value));
+      $rem-values: join($rem-values, convertPxToRem($value));
+    }
+    @else {
+    // no conversion:
+    $px-values: join($px-values, $value);
+    $rem-values: join($rem-values, $value);
+    }
+  }
+
+  #{$property}: $px-values;
+
+  // don't add media query if it's not needed:
+  @if $px-values != $rem-values {
+    @media only all { 
+      #{$property}: $rem-values;
+    }
+  }
+}
+
+
+
+
+
+@mixin attention() {
+// http://sassmeister.com/gist/35c9c323d22eefdbf293
+
+/* use:
+ a {
+   font-weight: bold;
+    text-decoration: none;
+    color: #c00;
+
+    @include attention() {
+        outline: none;
+        color: #09f;
+    }
+
+}
+*/
+
+
+    &:hover,
+    &:active,
+    &:focus {
+        @content;
+    }
+
+}
+
+
+@mixin border-radius($radius) {
+
+
+
+  -webkit-border-radius: 0px + $radius;
+  -moz-border-radius: 0px + $radius;
+  border-radius: 0px + $radius;
+
+  @media only all { 
+    -webkit-border-radius: convertPxToRem($radius);
+    -moz-border-radius: convertPxToRem($radius);
+    border-radius: convertPxToRem($radius);
+  }
+
+}
+
+
+@mixin border-box {
+//
+@warn("using @include border-box is fine, but using @extend %border-box means less compiled css");
+// http://www.sitepoint.com/sass-mixin-placeholder/
+//
+-webkit-box-sizing:border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+
+
+%border-box {
+-webkit-box-sizing:border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+
+
+@mixin mqTest($firstBP) {
+@if type-of($firstBP) != number {
+@content; 
+}
+}
+
+
+
+@mixin mq($firstBP, $firstMinMax:min, $secondBP:null, $secondMinMax:null) {
+  // usage:
+  // @include mq(only all)
+  // @include mq($mobileportrait)
+  // @include mq($mobileportrait,min)
+  // @include mq(600px,min)
+  // @include mq(31em,min)
+  // @include mq($mobileportrait,min,$tabletportrait,max)
+  // @include mq($tabletportrait, min, 1200px, max)
+  // (defaults to min-width)
+  @if type-of($firstBP) != number {
+    @if($understandsMQs) {
+      @media #{$firstBP} { @content; }
+    }
+    @else {
+    // may need to rethink this if 'print' is needed etc., as older browsers would implement that correctly
+      @content;
+    }
+  }
+  @else {
+    $mediaQuery: '('+$firstMinMax+'-width: ' + $firstBP + ')';
+    @if $secondBP != null {
+      $mediaQuery:  $mediaQuery + ' and ('+$secondMinMax+'-width: ' + $secondBP + ')';
+    }
+    @if($understandsMQs) {
+      @media #{$mediaQuery} { @content; }
+    }
+    @else {
+      // check values match IE (defined in variables - $triggerIEAt)
+      // convert all values to em to safely compare them:
+      $ieTriggerWidth: convertRootPxToEm($triggerIEAt);
+      $ieFirstBP: convertRootPxToEm($firstBP);
+      $ieSecondBP: convertRootPxToEm($secondBP);
+      // create IE output if this MQ is within IE's desired width:
+      $isValidforIE: false;
+      @if($firstMinMax == min) {
+        @if($ieFirstBP <= $ieTriggerWidth) {
+          @if $ieSecondBP == null {
+            $isValidforIE: true;
+          }
+          @else {
+            @if($ieSecondBP >= $ieTriggerWidth) {
+              $isValidforIE: true;
+            }
+          }
+        }
+      }
+      @else {
+        // is a max-width:
+        @if($ieFirstBP >= $ieTriggerWidth) {
+          @if $ieSecondBP == null {
+            $isValidforIE: true;
+          }
+          @else {
+            @if($ieSecondBP <= $ieTriggerWidth) {
+              $isValidforIE: true;
+            }
+          }
+        }
+      }
+      @if($isValidforIE) {
+        @content;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// to do:
+// allow border-box to accept %
+// font-face embed
+// background-size
+// gradient - http://lea.verou.me/2013/04/can-we-get-rid-of-gradient-prefixes/
+// transition
+// box shadow
+// gif to svg 
+// placeholder styling

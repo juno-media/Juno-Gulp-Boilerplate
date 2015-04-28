@@ -5,6 +5,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     imagemin = require('gulp-imagemin'),
     rename = require('gulp-rename'),
+    sourcemaps  = require('gulp-sourcemaps'),
+    cache = require('gulp-cache'),
     csslint = require('gulp-csslint'),
     concat = require('gulp-concat');
     
@@ -18,7 +20,9 @@ gulp.task('sass', function() {
 // js:
 gulp.task('scripts', function() {
   return gulp.src('js/src/*.js')
+    .pipe(sourcemaps.init())
     .pipe(concat('core.js'))
+    .pipe(sourcemaps.write({includeContent: false, sourceRoot: 'js/src/*.js'}))
     .pipe(gulp.dest('js'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())
@@ -28,7 +32,7 @@ gulp.task('scripts', function() {
 // images:
 gulp.task('images', function() {
   return gulp.src('images/src/*')
-    .pipe(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }))
+    .pipe(cache(imagemin({ optimizationLevel: 3, multipass: true, svgoPlugins: [{removeViewBox: false}] })))
     .pipe(gulp.dest('images'));
 });
 
@@ -46,6 +50,13 @@ gulp.task('csslint', function() {
     .pipe(csslint.reporter());
 });
 
+// Watch
+gulp.task('watch', function() {
+  gulp.watch('css/src/**/*.scss', ['sass']);
+  gulp.watch('js/src/*.js', ['scripts']);
+  gulp.watch('images/src/*', ['images']);
+});
+
 // testing task
 gulp.task('test', function() {
     gulp.start('jshint', 'csslint');
@@ -53,12 +64,6 @@ gulp.task('test', function() {
 
 // Default task
 gulp.task('default', function() {
-    gulp.start('sass', 'scripts', 'images');
+    gulp.start('sass', 'scripts', 'images', 'watch');
 });
 
-// Watch
-gulp.task('watch', function() {
-  gulp.watch('css/src/**/*.scss', ['sass']);
-  gulp.watch('js/src/*.js', ['scripts']);
-  gulp.watch('images/src/*', ['images']);
-});

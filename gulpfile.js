@@ -57,9 +57,10 @@ gulp.task('watch', function() {
   gulp.watch('images/src/*', ['images']);
 });
 
+
 // testing task
 gulp.task('test', function() {
-    gulp.start('jshint', 'csslint');
+    gulp.start('scripts', 'jshint', 'sass', 'csslint');
 });
 
 // Default task

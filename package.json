@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Just enough to get started",
   "author": "Juno",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/juno-media/Juno-Gulp-Boilerplate"
+},
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-cache": "^0.2.9",
@@ -17,3 +21,7 @@
     "gulp-uglify": "^1.2.0"
   }
 }
+
+
+
+

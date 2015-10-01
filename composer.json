@@ -1,0 +1,12 @@
+{
+    "name": "juno/project",
+    "description": "Frontend build boilerplate",
+    "type": "static",
+    "authors": [
+        {
+            "name": "Adam Paterson",
+            "email": "adamp@junowebdesign.com"
+        }
+    ],
+    "require": {}
+}

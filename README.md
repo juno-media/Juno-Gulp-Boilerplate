@@ -1,4 +1,2 @@
-Juno Web Design
-===============
-
-Gulp Boilerplate
+# Gulp Boilerplate
+The purpose of this package is to provide a starting point on static builds for projects. It should be used along side [`wearejh/statics-merger`](https://github.com/WeareJH/statics-merger).
